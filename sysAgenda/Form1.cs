@@ -109,37 +109,46 @@ namespace sysAgenda
         {
             if (txtNombres.Text.Trim().Length > 0)
             {
-                contacto Persona = new contacto();
-                if (temp == 0)
+                try
                 {
-                    Persona.AgregarContacto(txtNombres.Text, txtDireccion.Text, txtTelefono.Text, txtCelular.Text, txtEmail.Text, fechaActual, Convert.ToInt32(cboProfesion.SelectedValue.ToString()), Convert.ToInt32(cboPais.SelectedValue.ToString()));
+                    contacto Persona = new contacto();
+                    if (temp == 0)
+                    {
+
+                        Persona.AgregarContacto(txtNombres.Text, txtDireccion.Text, Convert.ToInt32(txtTelefono.Text), Convert.ToInt32(txtCelular.Text), txtEmail.Text, fechaActual, Convert.ToInt32(cboProfesion.SelectedValue.ToString()), Convert.ToInt32(cboPais.SelectedValue.ToString()));
+                    }
+                    else
+                    {
+                        Persona.ModificarContacto(Convert.ToInt32(ID), txtNombres.Text,
+                        txtDireccion.Text, Convert.ToInt32(txtTelefono.Text), Convert.ToInt32(txtCelular.Text), txtEmail.Text, fechaActual, Convert.ToInt32(cboProfesion.SelectedValue.ToString()),
+                        Convert.ToInt32(cboPais.SelectedValue.ToString()));
+                    }
+                    // capa en los controles
+                    txtNombres.ReadOnly = true;
+                    txtDireccion.ReadOnly = true;
+                    txtTelefono.ReadOnly = true;
+                    txtCelular.ReadOnly = true;
+                    txtEmail.ReadOnly = true;
+                    cboProfesion.Enabled = false;
+                    cboPais.Enabled = false;
+                    //Botones
+                    btnNuevo.Enabled = true;
+                    btnGrabar.Enabled = false;
+                    btnModificar.Enabled = false;
+                    btnCancelar.Enabled = false;
+                    btnEliminar.Enabled = false;
+                    btnListar.Enabled = true;
+                    btnSalir.Enabled = true;
+                    //Grid
+                    dtgDetalle.Enabled = true;
+                    dtgDetalle.Focus();
+                    MostrarGrid();
                 }
-                else
+
+                catch (System.FormatException)
                 {
-                    Persona.ModificarContacto(Convert.ToInt32(ID), txtNombres.Text,
-                    txtDireccion.Text, txtTelefono.Text, txtCelular.Text, txtEmail.Text, fechaActual, Convert.ToInt32(cboProfesion.SelectedValue.ToString()),
-                    Convert.ToInt32(cboPais.SelectedValue.ToString()));
+                    MessageBox.Show("Ingrese los valores correctos", "Aviso");
                 }
-                // capa en los controles
-                txtNombres.ReadOnly = true;
-                txtDireccion.ReadOnly = true;
-                txtTelefono.ReadOnly = true;
-                txtCelular.ReadOnly = true;
-                txtEmail.ReadOnly = true;
-                cboProfesion.Enabled = false;
-                cboPais.Enabled = false;
-                //Botones
-                btnNuevo.Enabled = true;
-                btnGrabar.Enabled = false;
-                btnModificar.Enabled = false;
-                btnCancelar.Enabled = false;
-                btnEliminar.Enabled = false;
-                btnListar.Enabled = true;
-                btnSalir.Enabled = true;
-                //Grid
-                dtgDetalle.Enabled = true;
-                dtgDetalle.Focus();
-                MostrarGrid();
             }
 
         }

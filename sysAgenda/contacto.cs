@@ -10,8 +10,8 @@ namespace sysAgenda
     class contacto
     {
         //Metodo para agregar contacto
-        public void AgregarContacto(string xNombreContacto, string xDireccionContacto, string
-        xTelefonoContacto, string xCelularContacto, string xEmailContacto, DateTime xFechaRegistro, int
+        public void AgregarContacto(string xNombreContacto, string xDireccionContacto, int
+        xTelefonoContacto, int xCelularContacto, string xEmailContacto, DateTime xFechaRegistro, int
         xCodigoProfesion, int xCodigoPais)
         {
             conexion cnn = new conexion();
@@ -20,8 +20,8 @@ namespace sysAgenda
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@NombreContacto", xNombreContacto);
             cmd.Parameters.AddWithValue("@DireccionContacto", xDireccionContacto);
-            cmd.Parameters.AddWithValue("@TelefonoContacto", xTelefonoContacto);
-            cmd.Parameters.AddWithValue("@CelularContacto", xCelularContacto);
+            cmd.Parameters.AddWithValue("@TelefonoContacto", Convert.ToString(xTelefonoContacto));
+            cmd.Parameters.AddWithValue("@CelularContacto", Convert.ToString(xCelularContacto));
             cmd.Parameters.AddWithValue("@EmailContacto", xEmailContacto);
             cmd.Parameters.AddWithValue("@FechaRegistro", xFechaRegistro);
             cmd.Parameters.AddWithValue("@CodigoProfesion", xCodigoProfesion);
@@ -44,7 +44,7 @@ namespace sysAgenda
         //Metodo para modificar contacto
         
         public void ModificarContacto(int xCodigoContacto, string xNombreContacto, string xDireccionContacto,
-        string xTelefonoContacto, string xCelularContacto, string xEmailContacto, DateTime xFechaRegistro, int
+        int xTelefonoContacto, int xCelularContacto, string xEmailContacto, DateTime xFechaRegistro, int
         xCodigoProfesion, int xCodigoPais)
         {
             conexion cnn = new conexion();
@@ -54,8 +54,8 @@ namespace sysAgenda
             cmd.Parameters.AddWithValue("@CodigoContacto", xCodigoContacto);
             cmd.Parameters.AddWithValue("@NombreContacto", xNombreContacto);
             cmd.Parameters.AddWithValue("@DireccionContacto", xDireccionContacto);
-            cmd.Parameters.AddWithValue("@TelefonoContacto", xTelefonoContacto);
-            cmd.Parameters.AddWithValue("@CelularContacto", xCelularContacto);
+            cmd.Parameters.AddWithValue("@TelefonoContacto", Convert.ToString(xTelefonoContacto));
+            cmd.Parameters.AddWithValue("@CelularContacto", Convert.ToString(xCelularContacto));
             cmd.Parameters.AddWithValue("@EmailContacto", xEmailContacto);
             cmd.Parameters.AddWithValue("@FechaRegistro", xFechaRegistro);
             cmd.Parameters.AddWithValue("@CodigoProfesion", xCodigoProfesion);
