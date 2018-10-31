@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace sysAgenda
 {
@@ -55,6 +56,19 @@ namespace sysAgenda
         {
             contacto persona = new contacto();
             dtgDetalle.DataSource = persona.ListarContacto();
+        }
+
+        private Boolean email_bien_escrito(String email)
+        {
+            try
+            {
+                var mail = new System.Net.Mail.MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private void MostrarPais()
@@ -107,52 +121,61 @@ namespace sysAgenda
 
         private void btnGrabar_Click(object sender, EventArgs e)
         {
-            if (txtNombres.Text.Trim().Length > 0)
-            {
+
                 try
                 {
+                    Boolean emailcomprobado = email_bien_escrito(txtEmail.Text);
+                
                     contacto Persona = new contacto();
-                    if (temp == 0)
+                    if (emailcomprobado == true)
                     {
+                        if (temp == 0)
+                        {
 
-                        Persona.AgregarContacto(txtNombres.Text, txtDireccion.Text, Convert.ToInt32(txtTelefono.Text), Convert.ToInt32(txtCelular.Text), txtEmail.Text, fechaActual, Convert.ToInt32(cboProfesion.SelectedValue.ToString()), Convert.ToInt32(cboPais.SelectedValue.ToString()));
+                            Persona.AgregarContacto(txtNombres.Text, txtDireccion.Text, Convert.ToInt32(txtTelefono.Text), Convert.ToInt32(txtCelular.Text), txtEmail.Text, fechaActual, Convert.ToInt32(cboProfesion.SelectedValue.ToString()), Convert.ToInt32(cboPais.SelectedValue.ToString()));
+                        }
+                        else
+                        {
+                            Persona.ModificarContacto(Convert.ToInt32(ID), txtNombres.Text,
+                            txtDireccion.Text, Convert.ToInt32(txtTelefono.Text), Convert.ToInt32(txtCelular.Text), txtEmail.Text, fechaActual, Convert.ToInt32(cboProfesion.SelectedValue.ToString()),
+                            Convert.ToInt32(cboPais.SelectedValue.ToString()));
+                        }
+                        // capa en los controles
+                        txtNombres.ReadOnly = true;
+                        txtDireccion.ReadOnly = true;
+                        txtTelefono.ReadOnly = true;
+                        txtCelular.ReadOnly = true;
+                        txtEmail.ReadOnly = true;
+                        cboProfesion.Enabled = false;
+                        cboPais.Enabled = false;
+                        //Botones
+                        btnNuevo.Enabled = true;
+                        btnGrabar.Enabled = false;
+                        btnModificar.Enabled = false;
+                        btnCancelar.Enabled = false;
+                        btnEliminar.Enabled = false;
+                        btnListar.Enabled = true;
+                        btnSalir.Enabled = true;
+                        //Grid
+                        dtgDetalle.Enabled = true;
+                        dtgDetalle.Focus();
+                        MostrarGrid();
                     }
                     else
                     {
-                        Persona.ModificarContacto(Convert.ToInt32(ID), txtNombres.Text,
-                        txtDireccion.Text, Convert.ToInt32(txtTelefono.Text), Convert.ToInt32(txtCelular.Text), txtEmail.Text, fechaActual, Convert.ToInt32(cboProfesion.SelectedValue.ToString()),
-                        Convert.ToInt32(cboPais.SelectedValue.ToString()));
+                        MessageBox.Show("Ingrese un correo valido");
                     }
-                    // capa en los controles
-                    txtNombres.ReadOnly = true;
-                    txtDireccion.ReadOnly = true;
-                    txtTelefono.ReadOnly = true;
-                    txtCelular.ReadOnly = true;
-                    txtEmail.ReadOnly = true;
-                    cboProfesion.Enabled = false;
-                    cboPais.Enabled = false;
-                    //Botones
-                    btnNuevo.Enabled = true;
-                    btnGrabar.Enabled = false;
-                    btnModificar.Enabled = false;
-                    btnCancelar.Enabled = false;
-                    btnEliminar.Enabled = false;
-                    btnListar.Enabled = true;
-                    btnSalir.Enabled = true;
-                    //Grid
-                    dtgDetalle.Enabled = true;
-                    dtgDetalle.Focus();
-                    MostrarGrid();
                 }
-
                 catch (System.FormatException)
                 {
                     MessageBox.Show("Ingrese los valores correctos", "Aviso");
                 }
-            }
+        
 
+        
         }
-
+        
+        
         private void btnModificar_Click(object sender, EventArgs e)
         {
             if ((dtgDetalle.Rows.Count > 0) &&
